@@ -1,0 +1,11 @@
+<div id="login">
+    <% if (user) { %>
+        <div id="profile">
+            <a href="/tree/user/<%= user.id %>">
+                <%= user.name %>님
+            </a>
+        </div>
+    <% } else { %>
+        <a href="./login">로그인</a>
+    <% } %>
+</div>

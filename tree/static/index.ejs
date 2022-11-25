@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>크리스마스 트리 꾸미기</title>
+</head>
+<body>
+    <%- include("./common/login"); %>
+
+    <% if (user === user2) { %> 
+        <span>안녕방갑다 트리꾸미기다 잘부탁한다</span>
+    <% } else { %> 
+        <span><%= user2.name %>님의 트리</span> 
+    <% } %>
+
+    <div id="got">
+        <% user2?.got.slice(0, 5).forEach(letter => { %>
+            <div class="letter">
+                <img src="/tree/img/<%= letter.img %>.png" alt="아이콘">
+                <span class="sender"><%= letter.name %></span>
+            </div>
+        <% }); %>
+    </div>
+    <img src="/tree/img/tree.png" alt="크리스마스 트리">
+    <% if (user !== user2) { %>
+        <div id="write">
+            <% if (user) { %> <button class="write">글쓰기</button>
+            <% } else %> <button onclick="if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) location='/tree/login'">글쓰기</button>
+        </div>
+    <% } %>
+
+    <%- include('./common/footer'); %>
+    <script src="/common/js/fetch.js"></script>
+    <script src="/tree/js/main.js"></script>
+</body>
+</html>
