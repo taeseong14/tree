@@ -25,7 +25,7 @@
             padding: 20px 30px;
             justify-content: space-between;
             box-sizing: border-box;
-            height: 180px;
+            height: 200px;
         }
 
         form > input {
@@ -57,6 +57,14 @@
             background-color: #00bbd436;
             transition: background-color .5s ease;
         }
+
+        form > span {
+            font-size: 12px;
+            text-align: center;
+        }
+        span > a {
+            color: black;
+        }
     </style>
     <title>크리스마스 트리 꾸미기 로그인</title>
 </head>
@@ -66,6 +74,10 @@
             <input type="text" id="id" placeholder="아이디">
             <input type="password" id="pw" placeholder="비밀번호">
             <button>로그인</button>
+            <span>계정이 없으신가요? <a href="/tree/register">회원가입</a></span>
+            <script>
+                document.querySelector('span > a').href += location.search;
+            </script>
         </form>
     </div>
     
