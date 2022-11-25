@@ -4,6 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *[hidden] {
+            display: none !important;
+        }
+
+        #write-tab {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #109111;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 300px;
+            height: 400px;
+        }
+        #write-tab > span {
+            text-align: right;
+            cursor: pointer;
+        }
+        #write-tab > input, #write-tab > textarea {
+            background-color: #C86F37;
+        }
+        #write-tab > button {
+            background-color: #f39090;
+        }
+    </style>
     <title>크리스마스 트리 꾸미기</title>
 </head>
 <body>
@@ -26,13 +54,51 @@
     <img src="/tree/img/tree.png" alt="크리스마스 트리">
     <% if (user !== user2) { %>
         <div id="write">
-            <% if (user) { %> <button class="write">글쓰기</button>
-            <% } else %> <button onclick="if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) location='/tree/login'">글쓰기</button>
+            <% if (user) { %> 
+                <button id="write-btn">글쓰기</button>
+            <% } else { %> 
+                <button onclick="if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) location='/tree/login?re=/tree/user/<%= user2.id %>'">글쓰기</button>
+            <% } %>
         </div>
     <% } %>
 
+    <!-- 글쓰기 탭 -->
+    <div id="write-tab" hidden>
+        <span>x</span>
+        <input type="text" id="title" placeholder="제목">
+        <textarea id="content" cols="30" rows="10" placeholder="내용"></textarea>
+        <button>보내기</button>
+    </div>
+
     <%- include('./common/footer'); %>
     <script src="/common/js/fetch.js"></script>
-    <script src="/tree/js/main.js"></script>
+    <script>
+        const writeTab = document.querySelector('#write-tab');
+        document.querySelector('button#write-btn')?.addEventListener('click', () => {
+            console.log(1);
+            writeTab.hidden = false;
+        });
+        writeTab.querySelector('button').addEventListener('click', e => {
+            const [title, content] = ['title', 'content'].map(id => document.getElementById(id).value);
+            if (!title || !content) return alert('빈 값이 있습니다.');
+            e.target.textContent = '보내는중..';
+            e.target.disabled = true;
+            new F('/tree/send').post({
+                to: location.pathname.split('/').filter(e=>e).pop(),
+                title,
+                content,
+                img: 'bell-red',
+            }).then(data => {
+                if (data.err) return alert(data.err);
+                console.log(data.result);
+                if (data.result === 'success') {
+                    alert('편지가 등록되었습니다!');
+                    writeTab.hidden = true;
+                    e.target.textContent = '보내기';
+                    e.target.disabled = false;
+                } else alert('머냔');
+            });
+        });
+    </script>
 </body>
 </html>
