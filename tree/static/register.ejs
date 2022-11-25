@@ -67,9 +67,19 @@
             background-color: #00bcd426;
             border: 1px solid #ddd;
             transition: background-color .5s ease;
+            border-radius: 5px;
         }
         form > button:hover {
             background-color: #00bcd426;
+        }
+
+        form > span:not(.warn) {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        span > a {
+            color: black;
         }
     </style>
     <title>크리스마스 트리 꾸미기 회원가입</title>
@@ -84,6 +94,10 @@
             <input type="text" id="name" placeholder="닉네임">
             <span class="warn hidden" id="warn-name">1-20자</span>
             <button>회원가입</button>
+            <span>계정이 있으신가요? <a href="/tree/login">로그인</a></span>
+            <script>
+                document.querySelector('span > a').href += location.search;
+            </script>
         </form>
     </div>
 
